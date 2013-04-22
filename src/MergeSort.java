@@ -1,16 +1,30 @@
 
 public class MergeSort {
+	
+	public static void main(String[] args){
+		int[] test = new int[8];
+		for(int index = 0; index < test.length; index++){
+			test[index] = (int)(Math.random()*100);
+		}
+		
+		int[] output = mergeSort(test);
+		for(int i : output){
+			System.out.println(i);
+		}
+		System.out.println("The length of this array is:" + output.length);
+		}
 
 	
 	
-	public static void mergeSort(int[] array){
+	public static int[] mergeSort(int[] array){
 		//Array to merge from
 		int[][] mergeArray = new int[array.length][1];
 		//Half way mark
 		int halfSize = (array.length/2);
 		//Temp array to sort with
 		int[][] firstHalf = new int[halfSize][];
-		int[][] secondHalf = new int[array.length-(halfSize+1)][];
+		int[][] secondHalf = new int[array.length-halfSize][];
+		int[][] finalArray = new int[1][];
 		int tempIndex = 0;
 		
 		for(int index = 0; index < array.length; index++){
@@ -18,21 +32,24 @@ public class MergeSort {
 		}
 		
 		
-		for(int index = 0; index < halfSize; index+=2){
-			tempIndex = 0;
+		for(int index = 0; index < halfSize+1; index+=2){
 			firstHalf[tempIndex] = merge(mergeArray[index], mergeArray[index+1]);
 			if(tempIndex != firstHalf.length){
 				tempIndex++;
-				}
 			}
+		}
 		
-		for(int index = halfSize; index < secondHalf.length; index++){
-			tempIndex = 0;
+		for(int index = halfSize; index < mergeArray.length; index++){
 			secondHalf[tempIndex] = merge(mergeArray[index], mergeArray[index+1]);
 			if(tempIndex != secondHalf.length){
 				tempIndex++;
 			}
 		}
+		
+		for(int index = 0; index < 1; index++){
+			finalArray[0] = merge(firstHalf[index], secondHalf[index]);
+		}
+		return finalArray[0];
 		}
 		
 		
