@@ -7,7 +7,7 @@ public class MergeSort {
 			test[index] = (int)(Math.random()*100);
 		}
 		
-		int[] output = mergeSort(test);
+		int[] output = mergeSort(test, 0, test.length);
 		for(int i : output){
 			System.out.println(i);
 		}
@@ -16,50 +16,24 @@ public class MergeSort {
 
 	
 	
-	public static int[] mergeSort(int[] array){
-		//Array to merge from
-		int[][] mergeArray = new int[array.length][1];
-		//Half way mark
-		int halfSize = (array.length/2);
-		//Temp array to sort with
-		int[][] firstHalf = new int[halfSize][];
-		int[][] secondHalf = new int[array.length-halfSize][];
-		int[][] finalArray = new int[1][];
-		int tempIndex = 0;
-		
-		for(int index = 0; index < array.length; index++){
-			mergeArray[index][0] = array[index];
+	public static int[] mergeSort(int[] array, Integer start, Integer end){
+		if(start<end){
+			int half = ((start+end)/2);
+			mergeSort(array, start, half);
+			mergeSort(array, half+1, end);
+			merge(array, start, half, end);
 		}
 		
-		
-		for(int index = 0; index < halfSize+1; index+=2){
-			firstHalf[tempIndex] = merge(mergeArray[index], mergeArray[index+1]);
-			if(tempIndex != firstHalf.length){
-				tempIndex++;
-			}
-		}
-		
-		for(int index = halfSize; index < mergeArray.length; index++){
-			secondHalf[tempIndex] = merge(mergeArray[index], mergeArray[index+1]);
-			if(tempIndex != secondHalf.length){
-				tempIndex++;
-			}
-		}
-		
-		for(int index = 0; index < 1; index++){
-			finalArray[0] = merge(firstHalf[index], secondHalf[index]);
-		}
-		return finalArray[0];
 		}
 		
 		
 	
-	private static int[] merge (int[] arrayFront, int[] arrayEnd){
-		int[] front = arrayFront;
-		int[] end = arrayEnd;
+	private static int[] merge (int[] array, Integer start, Integer half, Integer end){
+		int[] front = new int[half-start + 1];
+		int[] back = new int[end-half];
 		
-		int oneSize = arrayFront.length;
-		int twoSize = arrayEnd.length;
+		int oneSize = front.length;
+		int twoSize = back.length;
 		int newSize = oneSize + twoSize;
 		int[] returnArray = new int[newSize];
 		
@@ -71,13 +45,13 @@ public class MergeSort {
 		int k = 0;
 		
 		while(i< oneSize && j< twoSize){
-			if(front[i] < end[j]){
+			if(front[i] < back[j]){
 				returnArray[k] = front[i];
 				i++;
 				k++;
 			}
 			else{
-				returnArray[k] = end[j];
+				returnArray[k] = back[j];
 				j++;
 				k++;
 			}
@@ -90,7 +64,7 @@ public class MergeSort {
 		}
 		
 		while(j < twoSize){
-			returnArray[k] = end[j];
+			returnArray[k] = back[j];
 			j++;
 			k++;
 		}
